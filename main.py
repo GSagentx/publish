@@ -46,7 +46,7 @@ class Handler(webapp2.RequestHandler):
 # Shopping List.  Links to shopping_list.html
 #
 ################################################################################
-class MainPage(Handler):
+class ShoppingList(Handler):
 	def get(self):
 		items = self.request.get_all("food")
 		self.render("shopping_list.html", items = items)
@@ -65,7 +65,39 @@ class FizzBuzz(Handler):
 			n = 0
 		self.render("fizzbuzz.html", n = n)
 		
+############################################################
+#
+#Main page listing all path's within this project
+#
+############################################################
+class MainPage(webapp2.RequestHandler):
+	def write_form(self, host=""):
+		mainForm="""
+			<H1>You have reached the main page</H1>
+			<p>The following links can be found from this project:
+				<div>
+					%(list)s
+				</div>
+			</p>
+			"""
+		host = str(self.request.url)
+		pages = self.makeList(host, "shopping", "fizzbuzz?n=100")
+		self.response.out.write(mainForm % {"list": pages})
+
+	def get(self):
+		self.write_form()
+
+	def makeList(self, host, *args):
+			#args = args or [""]
+			pageList = ""
+			for page in args:
+				path = str(host)+str(page)
+				name = str(page)
+				pageList += '<li><a href="' + path + '">' + page + '</a></li>'
+			return pageList
+		
 app = webapp2.WSGIApplication([
 	('/', MainPage),
+	('/shopping', ShoppingList),
 	('/fizzbuzz', FizzBuzz)], 
 	debug=True)
