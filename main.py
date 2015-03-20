@@ -16,7 +16,7 @@
 #
 #
 #
-# oauth for push in cmd: appcfg.py --oath2 update ~/path-to-project/
+# oauth for push in cmd: appcfg.py --oath2 update ~/path-to-project(include/ at end)
 import webapp2
 import os
 import jinja2
